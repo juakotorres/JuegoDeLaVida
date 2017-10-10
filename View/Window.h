@@ -12,6 +12,9 @@
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QComboBox>
+#include <QtCore/QStringListModel>
+#include <QtWidgets/QGridLayout>
 
 
 class Window : public QWidget {
@@ -19,6 +22,7 @@ Q_OBJECT
 public:
     Window(QWidget *parent = 0);
     ~Window();
+
 public slots:
     void handleButton();
 
@@ -26,11 +30,19 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
+    QGridLayout *gridLayout_2;
+    QGridLayout *gridLayout_3;
+    QComboBox *comboBox;
     QLabel *label;
-    QSlider *horizontalSlider;
+    QComboBox *comboBox_2;
+    QPushButton *pushButton_2;
+    QLabel *label_2;
+    QSpacerItem *horizontalSpacer;
+    QGridLayout *gridLayout;
     QWidget *widget;
-    QSpinBox *spinBox;
     QPushButton *pushButton;
+    QStringListModel *typeModel;
+    QStringListModel *typeModel2;
 
     void setUpGUI();
 };

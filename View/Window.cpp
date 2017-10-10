@@ -3,8 +3,9 @@
 //
 
 #include "Window.h"
+#include "Canvas.h"
 #include <QPainter>
-#include <QtWidgets/QVBoxLayout>
+#include <iostream>
 
 Window::Window(QWidget *parent)
         : QWidget(parent)
@@ -17,44 +18,88 @@ void Window::paintEvent(QPaintEvent *e) {
 }
 
 void Window::setUpGUI() {
+    
+    resize(823, 572);
+    gridLayout_2 = new QGridLayout(this);
+    gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+    gridLayout_3 = new QGridLayout();
+    gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
 
-    resize(640, 480);
+    QStringList items;
+    items << tr("Ejemplo 1") << tr("Ejemplo 2") << tr("Ejemplo 3");
+    typeModel = new QStringListModel(items, this);
+
+    comboBox = new QComboBox(this);
+    comboBox->clear();
+    comboBox->setModel(typeModel);
+    comboBox->setObjectName(QString::fromUtf8("comboBox"));
+
+    gridLayout_3->addWidget(comboBox, 1, 0, 1, 1);
+
     label = new QLabel(this);
     label->setObjectName(QString::fromUtf8("label"));
-    label->setGeometry(QRect(30, 420, 161, 20));
-    horizontalSlider = new QSlider(this);
-    horizontalSlider->setObjectName(QString::fromUtf8("horizontalSlider"));
-    horizontalSlider->setGeometry(QRect(210, 420, 160, 22));
-    horizontalSlider->setMouseTracking(true);
-    horizontalSlider->setMinimum(10);
-    horizontalSlider->setMaximum(30);
-    horizontalSlider->setOrientation(Qt::Horizontal);
-    widget = new QWidget(this);
-    widget->setObjectName(QString::fromUtf8("widget"));
-    widget->setGeometry(QRect(0, 0, 640, 400));
-    spinBox = new QSpinBox(this);
-    spinBox->setObjectName(QString::fromUtf8("spinBox"));
-    spinBox->setGeometry(QRect(380, 421, 41, 21));
-    spinBox->setMinimum(10);
-    spinBox->setMaximum(30);
-    pushButton = new QPushButton(this);
-    pushButton->setObjectName(QString::fromUtf8("pushButton"));
-    pushButton->setGeometry(QRect(450, 421, 92, 32));
+    label->setScaledContents(false);
+    label->setWordWrap(false);
+    label->setText("Elegir Ejemplo: ");
 
-    setWindowTitle("Delaunay");
-    label->setText("Choose minimum angle: ");
-    pushButton->setText("Process");
-    QObject::connect(horizontalSlider, SIGNAL(sliderMoved(int)), spinBox, SLOT(setValue(int)));
-    QObject::connect(horizontalSlider, SIGNAL(valueChanged(int)), spinBox, SLOT(setValue(int)));
-    QObject::connect(spinBox, SIGNAL(valueChanged(int)), horizontalSlider, SLOT(setValue(int)));
-    connect(pushButton, SIGNAL(pressed()), this, SLOT(handleButton()));
+    gridLayout_3->addWidget(label, 0, 0, 1, 1);
+
+    QStringList items2;
+    items2 << tr("CPU") << tr("CUDA") << tr("OpenCL");
+    typeModel2 = new QStringListModel(items2, this);
+
+    comboBox_2 = new QComboBox(this);
+    comboBox_2->setObjectName(QString::fromUtf8("comboBox_2"));
+    comboBox_2->setModel(typeModel2);
+
+    gridLayout_3->addWidget(comboBox_2, 1, 2, 1, 1);
+
+    pushButton_2 = new QPushButton(this);
+    pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+
+    gridLayout_3->addWidget(pushButton_2, 1, 4, 1, 1);
+
+    label_2 = new QLabel(this);
+    label_2->setObjectName(QString::fromUtf8("label_2"));
+    label_2->setText("Elegir implementación: ");
+
+    gridLayout_3->addWidget(label_2, 0, 2, 1, 1);
+
+    horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+    gridLayout_3->addItem(horizontalSpacer, 0, 3, 1, 1);
+
+    gridLayout_3->setColumnStretch(0, 1);
+    gridLayout_3->setColumnStretch(2, 1);
+    gridLayout_3->setColumnStretch(3, 3);
+    gridLayout_3->setColumnStretch(4, 1);
+
+    gridLayout_2->addLayout(gridLayout_3, 1, 0, 1, 1);
+
+    gridLayout = new QGridLayout();
+    gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+    widget = new Canvas(this);
+    widget->setObjectName(QString::fromUtf8("widget"));
+    widget->setMinimumSize(QSize(0, 272));
+
+    gridLayout->addWidget(widget, 0, 0, 1, 1);
+
+
+    gridLayout_2->addLayout(gridLayout, 0, 0, 1, 1);
+
+    gridLayout_2->setRowStretch(0, 20);
+    gridLayout_2->setRowStretch(1, 3);
+
+    pushButton_2->setText("Run");
+
+    connect(pushButton_2, SIGNAL(pressed()), this, SLOT(handleButton()));
 
     QMetaObject::connectSlotsByName(this);
 
 }
 
 void Window::handleButton() {
-
+    std::cout << "holi" << std::endl;
 }
 
 Window::~Window() {
