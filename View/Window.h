@@ -15,6 +15,9 @@
 #include <QtWidgets/QComboBox>
 #include <QtCore/QStringListModel>
 #include <QtWidgets/QGridLayout>
+#include "../Implementations/CPU/cpu.h"
+#include "Canvas.h"
+#include "../Implementations/OpenCL/parallelOpenCL.h"
 
 
 class Window : public QWidget {
@@ -39,12 +42,15 @@ private:
     QLabel *label_2;
     QSpacerItem *horizontalSpacer;
     QGridLayout *gridLayout;
-    QWidget *widget;
+    Canvas *widget;
     QPushButton *pushButton;
     QStringListModel *typeModel;
     QStringListModel *typeModel2;
 
     void setUpGUI();
+
+    opencl *cpu;
+
 };
 
 

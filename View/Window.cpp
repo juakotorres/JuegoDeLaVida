@@ -4,17 +4,25 @@
 
 #include "Window.h"
 #include "Canvas.h"
+#include "../Implementations/OpenCL/parallelOpenCL.h"
 #include <QPainter>
 #include <iostream>
+#include <zconf.h>
 
 Window::Window(QWidget *parent)
         : QWidget(parent)
-{   setUpGUI(); }
+{
+    setUpGUI();
+
+    cpu = new opencl();
+}
 
 void Window::paintEvent(QPaintEvent *e) {
 
     Q_UNUSED(e);
     QPainter qp(this);
+    //widget->runIteration(cpu);
+    //usleep(100000);
 }
 
 void Window::setUpGUI() {
@@ -99,7 +107,7 @@ void Window::setUpGUI() {
 }
 
 void Window::handleButton() {
-    std::cout << "holi" << std::endl;
+    widget->runIteration(cpu);
 }
 
 Window::~Window() {
