@@ -9,7 +9,7 @@
 #include "../../Utils/Matrix.h"
 #include "../implementations.h"
 
-class highlifecpu : public implementations{
+class cpu : public implementations{
 
 public:
     void runIteration(Matrix *grid);

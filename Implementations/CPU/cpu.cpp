@@ -5,7 +5,7 @@
 #include <iostream>
 #include "cpu.h"
 
-void highlifecpu::runIteration(Matrix *grid) {
+void cpu::runIteration(Matrix *grid) {
 
     int width = grid->getWidth();
     int height = grid->getHeight();

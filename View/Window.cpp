@@ -3,18 +3,13 @@
 //
 
 #include "Window.h"
-#include "Canvas.h"
-#include "../Implementations/OpenCL/parallelOpenCL.h"
 #include <QPainter>
-#include <iostream>
-#include <zconf.h>
 
 Window::Window(QWidget *parent)
         : QWidget(parent)
 {
+    modelo =  new model();
     setUpGUI();
-
-    cpu = new opencl();
 }
 
 void Window::paintEvent(QPaintEvent *e) {
@@ -34,7 +29,7 @@ void Window::setUpGUI() {
     gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
 
     QStringList items;
-    items << tr("Ejemplo 1") << tr("Ejemplo 2") << tr("Ejemplo 3");
+    items << tr("Lines") << tr("Replicator") << tr("Waifu");
     typeModel = new QStringListModel(items, this);
 
     comboBox = new QComboBox(this);
@@ -87,6 +82,7 @@ void Window::setUpGUI() {
     gridLayout = new QGridLayout();
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
     widget = new Canvas(this);
+    widget->setModel(modelo);
     widget->setObjectName(QString::fromUtf8("widget"));
     widget->setMinimumSize(QSize(0, 272));
 
@@ -107,7 +103,10 @@ void Window::setUpGUI() {
 }
 
 void Window::handleButton() {
-    widget->runIteration(cpu);
+
+    std::string chosenExample = comboBox->currentText().toUtf8().constData();
+    std::string chosenImplementation = comboBox_2->currentText().toUtf8().constData();
+    widget->handleButton(chosenExample, chosenImplementation);
 }
 
 Window::~Window() {

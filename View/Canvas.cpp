@@ -3,16 +3,9 @@
 //
 
 #include <QtGui/QPainter>
-#include <iostream>
 #include "Canvas.h"
-#include "../Examples/GosperGliderGun.h"
-#include "../Examples/Lines.h"
-#include "../Examples/Replicator.h"
-#include "../Examples/Waifu.h"
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent) {
-    myExample = new Waifu();
-    myGrid = myExample->getExample();
 }
 
 Canvas::~Canvas() { }
@@ -28,6 +21,8 @@ void Canvas::paintEvent(QPaintEvent *event) {
 }
 
 void Canvas::drawGrid(QPainter *painter, int width, int height) {
+    Matrix *myGrid = myModel->getGrid();
+
     int widthP = width / myGrid->getWidth();
     int heightP = height / myGrid->getHeight();
 
@@ -35,7 +30,7 @@ void Canvas::drawGrid(QPainter *painter, int width, int height) {
         for (int j = 0; j < myGrid->getHeight(); j++){
 
             Qt::GlobalColor color = Qt::white;
-            if (this->myGrid->getValue(i, j) == 1){
+            if (myGrid->getValue(i, j) == 1){
                 color = Qt::black;
             }
 
@@ -43,11 +38,17 @@ void Canvas::drawGrid(QPainter *painter, int width, int height) {
         }
     }
 
-
 }
 
-void Canvas::runIteration(implementations *cpu) {
-    cpu->runIteration(myGrid);
-    //std::cout << "ya iteró" << std::endl;
+void Canvas::setModel(model *pModel) {
+    myModel = pModel;
+}
+
+void Canvas::handleButton(std::string chosenExample, std::string chosenImplementation) {
+
+    myModel->setCurrentImplementation(chosenImplementation);
+    myModel->setCurrentExample(chosenExample);
+    myModel->runIteration();
+
     this->update();
 }

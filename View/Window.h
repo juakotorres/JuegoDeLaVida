@@ -18,6 +18,7 @@
 #include "../Implementations/CPU/cpu.h"
 #include "Canvas.h"
 #include "../Implementations/OpenCL/parallelOpenCL.h"
+#include "../Model/model.h"
 
 
 class Window : public QWidget {
@@ -49,7 +50,7 @@ private:
 
     void setUpGUI();
 
-    opencl *cpu;
+    model *modelo;
 
 };
 
