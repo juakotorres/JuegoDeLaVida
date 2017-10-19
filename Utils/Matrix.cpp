@@ -7,12 +7,11 @@
 #include <stdlib.h>
 
 Matrix::Matrix(int width, int height) {
-    this->valores = new int*[height];
+    this->valores = new int[height*width];
 
     for (int i = 0; i < width; i++) {
-        this->valores[i] = new int[height];
         for (int j = 0; j < height; j++) {
-            valores[i][j] = 0;
+            valores[i*height + j] = 0;
         }
     }
 
@@ -25,11 +24,11 @@ Matrix::Matrix(int size) {
 }
 
 void Matrix::setValue(int i, int j, int value) {
-    valores[i][j] = value;
+    valores[i*height + j] = value;
 }
 
 int Matrix::getValue(int i, int j) {
-    return valores[i][j];
+    return valores[i*height + j];
 }
 
 int Matrix::getHeight(){
@@ -41,5 +40,9 @@ int Matrix::getWidth(){
 }
 
 Matrix::~Matrix() {
+    delete(valores);
+}
 
+int *Matrix::getMatrix() {
+    return valores;
 }

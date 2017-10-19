@@ -2,7 +2,7 @@
 // Created by juaki on 10/13/17.
 //
 
-#include <err.h>
+#include <fstream>
 #include "parallelOpenCL.h"
 
 
@@ -33,10 +33,22 @@ void opencl::runIteration(Matrix *grid) {
     cl::Program::Sources sources;
 
     // kernel calculates for each element C=A+B
-    std::string kernel_code=
-            "   void kernel simple_add(global const int* A, global const int* B, global int* C){       "
-                    "       C[get_global_id(0)]=A[get_global_id(0)]+B[get_global_id(0)];                 "
-                    "   }                                                                               ";
+    std::string kernel_code;
+
+    // Load the kernel from source code
+    std::ifstream kernelFile("Implementations/OpenCL/kernel.cl");
+    std::string myLine;
+
+    if (kernelFile.is_open())
+    {
+        while ( getline (kernelFile, myLine) )
+        {
+            kernel_code.append(myLine);
+            kernel_code.append("\n");
+        }
+        kernelFile.close();
+    }
+
     sources.push_back({kernel_code.c_str(),kernel_code.length()});
 
     cl::Program program(context,sources);
@@ -47,41 +59,54 @@ void opencl::runIteration(Matrix *grid) {
     }
 
 
-    // create buffers on the device
-    cl::Buffer buffer_A(context,CL_MEM_READ_WRITE,sizeof(int)*10);
-    cl::Buffer buffer_B(context,CL_MEM_READ_WRITE,sizeof(int)*10);
-    cl::Buffer buffer_C(context,CL_MEM_READ_WRITE,sizeof(int)*10);
+    int height = grid->getHeight();
+    int width = grid->getWidth();
 
-    int A[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    int B[] = {0, 1, 2, 0, 1, 2, 0, 1, 2, 0};
+    // create buffers on the device
+    cl::Buffer buffer_A(context, CL_MEM_READ_WRITE, sizeof(int)*height*width);
+    cl::Buffer buffer_C(context, CL_MEM_READ_WRITE, sizeof(int)*height*width);
+    cl::Buffer buffer_W(context, CL_MEM_READ_WRITE, sizeof(int));
+    cl::Buffer buffer_H(context, CL_MEM_READ_WRITE, sizeof(int));
+
+    int *A = grid->getMatrix();
+    /*for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            std::cout << A[i*height + j] << "";
+        }
+        std::cout << std::endl;
+    }*/
+
 
     //create queue to which we will push commands for the device.
     cl::CommandQueue queue(context,default_device);
 
-    //write arrays A and B to the device
-    queue.enqueueWriteBuffer(buffer_A,CL_TRUE,0,sizeof(int)*10,A);
-    queue.enqueueWriteBuffer(buffer_B,CL_TRUE,0,sizeof(int)*10,B);
+    //std::cout << "Matrix A to device" << std::endl;
+    //write matrix to the device
+    queue.enqueueWriteBuffer(buffer_A, CL_TRUE, 0, sizeof(int)*height*width, A);
 
 
+    //std::cout << "Run kernel" << std::endl;
     //run the kernel
     /*cl::KernelFunctor simple_add(cl::Kernel(program,"simple_add"),queue,cl::NullRange,cl::NDRange(10),cl::NullRange);
     simple_add(buffer_A,buffer_B,buffer_C);*/
 
     //alternative way to run the kernel
-    cl::Kernel kernel_add=cl::Kernel(program,"simple_add");
-    kernel_add.setArg(0,buffer_A);
-    kernel_add.setArg(1,buffer_B);
-    kernel_add.setArg(2,buffer_C);
-    queue.enqueueNDRangeKernel(kernel_add,cl::NullRange,cl::NDRange(10),cl::NullRange);
+    cl::Kernel kernel_add = cl::Kernel(program,"simple_add");
+    kernel_add.setArg(0, buffer_A);
+    kernel_add.setArg(2, width);
+    kernel_add.setArg(3, height);
+    kernel_add.setArg(1, buffer_C);
+    queue.enqueueNDRangeKernel(kernel_add, cl::NullRange, cl::NDRange((size_t) (width * height)), cl::NullRange);
     queue.finish();
 
-    int C[10];
+    int C[width*height];
     //read result C from the device to array C
-    queue.enqueueReadBuffer(buffer_C,CL_TRUE,0,sizeof(int)*10,C);
+    queue.enqueueReadBuffer(buffer_C,CL_TRUE,0,sizeof(int)*width*height,C);
 
-    std::cout<<" result: \n";
-    for(int i=0;i<10;i++){
-        std::cout<<C[i]<<" ";
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            grid->setValue(i,j, C[i*height + j]);
+        }
     }
 
 }

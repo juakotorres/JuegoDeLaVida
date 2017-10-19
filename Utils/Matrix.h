@@ -16,12 +16,13 @@ public:
     int getValue(int i, int j);
     int getHeight();
     int getWidth();
+    int *getMatrix();
 
     ~Matrix();
 
 private:
     int height,width;
-    int** valores;
+    int* valores;
 };
 
 

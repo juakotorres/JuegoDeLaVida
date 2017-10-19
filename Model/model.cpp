@@ -25,7 +25,7 @@ Matrix *model::getGrid() {
 }
 
 void model::runIteration() {
-
+    implementationopencl->runIteration(getGrid());
 }
 
 void model::setCurrentExample(std::string name) {
