@@ -1,6 +1,6 @@
 set(CMAKE_AUTOMOC ON)
 cmake_minimum_required(VERSION 3.7)
-project(JuegoDeLaDavi LANGUAGES CXX CUDA)
+project(JuegoDeLaDavi LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -15,12 +15,10 @@ endif()
 
 
 find_package(OpenCL REQUIRED)
-include_directories(${OpenCL_INCLUDE_DIRS})
-link_directories(${OpenCL_LIBRARY})
 
 add_executable(JuegoDeLaDavi ${SOURCE_FILES})
 
-target_link_libraries (JuegoDeLaDavi ${OpenCL_LIBRARY})
+target_link_libraries (JuegoDeLaDavi OpenCL::OpenCL)
 find_package( Qt5Core REQUIRED )
 find_package( Qt5Widgets REQUIRED )
 find_package( Qt5Gui REQUIRED )
