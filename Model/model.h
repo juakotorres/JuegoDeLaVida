@@ -28,7 +28,7 @@ private:
     int currentImplementation;
     int currentExample;
 
-    Example *examples[3];
+    Example *examples[4];
 
 };
 

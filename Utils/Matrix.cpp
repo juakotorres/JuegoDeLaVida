@@ -11,7 +11,7 @@ Matrix::Matrix(int width, int height) {
 
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            valores[i*height + j] = 0;
+            valores[i*height + j] = (rand() % static_cast<int>(2));
         }
     }
 

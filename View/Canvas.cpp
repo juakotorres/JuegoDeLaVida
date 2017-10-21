@@ -52,3 +52,28 @@ void Canvas::handleButton(std::string chosenExample, std::string chosenImplement
 
     this->update();
 }
+
+void Canvas::handleButton1s(std::string chosenExample, std::string chosenImplementation) {
+
+    myModel->setCurrentImplementation(chosenImplementation);
+    myModel->setCurrentExample(chosenExample);
+
+    std::clock_t start;
+    double dt;
+    double timeaccumulator = 0;
+    double iterations = 0;
+    while (true) {
+        start = std::clock();
+        timeaccumulator += dt;
+        myModel->runIteration();
+        dt = 1000.0 * ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+        iterations++;
+        if (timeaccumulator >= 1000.0){
+            break;
+        }
+    }
+
+    std::cout << iterations << std::endl;
+    this->update();
+
+}

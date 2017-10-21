@@ -29,6 +29,7 @@ public:
 
 public slots:
     void handleButton();
+    void handleButton1s();
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -44,7 +45,7 @@ private:
     QSpacerItem *horizontalSpacer;
     QGridLayout *gridLayout;
     Canvas *widget;
-    QPushButton *pushButton;
+    QPushButton *pushButton_3;
     QStringListModel *typeModel;
     QStringListModel *typeModel2;
 

@@ -22,6 +22,7 @@ set(SOURCE_FILES main.cpp
         Model/model.h
         Implementations/CUDA/parallelCuda.cpp
         Implementations/CUDA/parallelCuda.h
+        Examples/RandomExample.cpp Examples/RandomExample.h
         )
 
 find_package(CUDA QUIET REQUIRED)

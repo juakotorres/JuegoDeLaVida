@@ -6,6 +6,7 @@
 #include "../Examples/Waifu.h"
 #include "../Examples/Replicator.h"
 #include "../Examples/Lines.h"
+#include "../Examples/RandomExample.h"
 
 model::model() {
     implementationcpu = new cpu();
@@ -15,6 +16,7 @@ model::model() {
     examples[0] = new Lines();
     examples[1] = new Replicator();
     examples[2] = new Waifu();
+    examples[3] = new RandomExample(1920, 1080);
 
     currentImplementation = 0;
     currentExample = 0;
@@ -45,6 +47,8 @@ void model::setCurrentExample(std::string name) {
         currentExample = 0;
     else if (name.compare("Replicator") == 0)
         currentExample = 1;
+    else if (name.compare("Random") == 0)
+        currentExample = 3;
     else {
         currentExample = 2;
     }
