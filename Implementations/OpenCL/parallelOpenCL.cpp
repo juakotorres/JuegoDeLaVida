@@ -96,7 +96,7 @@ opencl::opencl() {
     std::string kernel_code;
 
     // Load the kernel from source code
-    std::ifstream kernelFile("Implementations/OpenCL/kernelSinIf    .cl");
+    std::ifstream kernelFile("Implementations/OpenCL/kernelSinIf.cl");
     std::string myLine;
 
     if (kernelFile.is_open())

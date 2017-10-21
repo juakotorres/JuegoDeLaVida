@@ -31,5 +31,5 @@ void kernel simple_add(global int* A, global int* C,  int W, int H){
 
     int value = A[k];
 
-    C[k] = (value == 1 && (sum == 2 || sum == 3)) || (value == 0 && (sum == 3 || sum == 6) )
+    C[k] = (value == 1 && (sum == 2 || sum == 3)) || (value == 0 && (sum == 3 || sum == 6) );
 }

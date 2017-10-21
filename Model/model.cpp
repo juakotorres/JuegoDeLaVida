@@ -63,3 +63,13 @@ void model::setCurrentImplementation(std::string name) {
     else
         currentImplementation = 2;
 }
+
+std::string model::getImplementation() {
+    if (currentImplementation == 0)
+        return "CPU";
+    else if (currentImplementation == 1)
+        return "CUDA";
+    else {
+        return "OpenCL";
+    }
+}

@@ -115,7 +115,7 @@ void run(int* a, int W, int H){
     //int blockSize, gridSize;
 
     // Execute the kernel
-    deviceIterationNotIf<<<1, H*W>>>(d_c, d_a, H, W);
+    deviceIterationNotIf<<<H*W, 1>>>(d_c, d_a, H, W);
 
     // Copy array back to host
     cudaMemcpy( h_c, d_c, bytes, cudaMemcpyDeviceToHost );
