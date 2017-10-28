@@ -3,6 +3,7 @@
 //
 
 #include <fstream>
+#include <cmath>
 #include "parallelOpenCL.h"
 
 
@@ -40,13 +41,33 @@ void opencl::runIteration(Matrix *grid) {
     /*cl::KernelFunctor simple_add(cl::Kernel(program,"simple_add"),queue,cl::NullRange,cl::NDRange(10),cl::NullRange);
     simple_add(buffer_A,buffer_B,buffer_C);*/
 
+    size_t n, blockSize, gridSize;
+
+    // Tamaño de la matriz.
+    n = (size_t) height*width;
+
+    // Tamaño del bloque. Elegir entre 32 y 31. Este numero debe dividir el tamaño del arreglo.
+    // blockSize = 32;
+    // blockSize = 31;
+
+    // Esto nos da un bloque de tamaño no multiplo de 32
+    for (int i=2; i <= n; i++)
+    {
+        if (n % i == 0 && i % 32 != 0) {
+            blockSize = (size_t) i;
+            break;
+        }
+    }
+
+
+
     //alternative way to run the kernel
     cl::Kernel kernel_add = cl::Kernel(myProgram,"simple_add");
     kernel_add.setArg(0, buffer_A);
     kernel_add.setArg(2, width);
     kernel_add.setArg(3, height);
     kernel_add.setArg(1, buffer_C);
-    queue.enqueueNDRangeKernel(kernel_add, cl::NullRange, cl::NDRange((size_t) (width * height)), cl::NullRange);
+    queue.enqueueNDRangeKernel(kernel_add, cl::NullRange, cl::NDRange(n), cl::NDRange(blockSize));
     queue.finish();
 
     int C[width*height];
@@ -96,7 +117,7 @@ opencl::opencl() {
     std::string kernel_code;
 
     // Load the kernel from source code
-    std::ifstream kernelFile("Implementations/OpenCL/kernelSinIf.cl");
+    std::ifstream kernelFile("Implementations/OpenCL/kernel.cl");
     std::string myLine;
 
     if (kernelFile.is_open())

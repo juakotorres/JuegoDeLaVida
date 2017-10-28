@@ -13,21 +13,29 @@ void kernel simple_add(global int* A, global int* C,  int W, int H){
     const int up = (j + H - 1)%H;
 
     // left
-    sum += A[right*H + j];
+    if (A[right * H + j])
+        sum++;
     // right
-    sum += A[left*H + j];
+    if (A[left * H + j])
+        sum++;
     // up
-    sum += A[i*H + up];
+    if (A[i * H + up])
+        sum++;
     // down
-    sum += A[i*H + down];
+    if (A[i * H + down])
+        sum++;
     // upright
-    sum += A[right*H + up];
+    if (A[right * H + up])
+        sum++;
     // downright
-    sum += A[right*H + down];
+    if (A[right * H + down])
+        sum++;
     // upleft
-    sum += A[left*H + up];
+    if (A[left * H + up])
+        sum++;
     // downleft
-    sum += A[left*H + down];
+    if (A[left * H + down])
+        sum++;
 
     int value = A[k];
     int result = 0;

@@ -30,21 +30,29 @@ __global__ void deviceIteration(int *c, int *a, int H, int W)
         // Calculamos la suma de los valores vecinos.
 
         // left
-        sum += a[right * H + j];
+        if (a[right * H + j])
+            sum++;
         // right
-        sum += a[left * H + j];
+        if (a[left * H + j])
+            sum++;
         // up
-        sum += a[i * H + up];
+        if (a[i * H + up])
+            sum++;
         // down
-        sum += a[i * H + down];
+        if (a[i * H + down])
+            sum++;
         // upright
-        sum += a[right * H + up];
+        if (a[right * H + up])
+            sum++;
         // downright
-        sum += a[right * H + down];
+        if (a[right * H + down])
+            sum++;
         // upleft
-        sum += a[left * H + up];
+        if (a[left * H + up])
+            sum++;
         // downleft
-        sum += a[left * H + down];
+        if (a[left * H + down])
+            sum++;
 
         int value = a[k];
         int result = 0;
@@ -61,7 +69,8 @@ __global__ void deviceIteration(int *c, int *a, int H, int W)
 __global__ void deviceIterationNotIf(int *c, int *a, int H, int W)
 {
     // Tomamos el indice y lugar donde se calculará si vive o no.
-    const int k = blockIdx.x;
+    const int k = blockIdx.x * blockDim.x + threadIdx.x;
+    
     // En caso de pasarnos no lo consideramos.
     if (k < W*H) {
 
@@ -126,10 +135,20 @@ void run(int* a, int W, int H){
     // Copy host vectors to device
     cudaMemcpy(d_a, a, bytes, cudaMemcpyHostToDevice);
 
-    //int blockSize, gridSize;
+    int blockSize, gridSize, n;
+
+    // Tamaño de la matriz.
+    n = H*W;
+
+    // Tamaño del bloque. Elegir entre 32 y 31.
+    blockSize = 32;
+    // blockSize = 31;
+
+    // Number of thread blocks in grid
+    gridSize = (int)ceil((float)n/blockSize);
 
     // Execute the kernel
-    deviceIterationNotIf<<<H*W, 1>>>(d_c, d_a, H, W);
+    deviceIteration<<< gridSize, blockSize >>>(d_c, d_a, H, W);
 
     // Copy array back to host
     cudaMemcpy( h_c, d_c, bytes, cudaMemcpyDeviceToHost );
