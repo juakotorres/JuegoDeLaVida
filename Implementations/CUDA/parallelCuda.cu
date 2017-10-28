@@ -9,19 +9,25 @@
 // CUDA kernel. Each thread takes care of one element of c
 __global__ void deviceIteration(int *c, int *a, int H, int W)
 {
-    // Get our global thread ID
-    const int k = blockIdx.x * blockDim.x + threadIdx.x;;
+    // Tomamos el indice y lugar donde se calculará si vive o no.
+    const int k = blockIdx.x * blockDim.x + threadIdx.x;
+
+    // En caso de pasarnos no lo consideramos.
     if (k < W*H) {
 
+        // Calculamos la posición en la matriz.
         const int i = k / H;
         const int j = k % H;
 
         int sum = 0;
 
+        // Ahora obtenemos los indices de los vecinos.
         const int left = (i + W - 1) % W;
         const int right = (i + 1) % W;
         const int down = (j + 1) % H;
         const int up = (j + H - 1) % H;
+
+        // Calculamos la suma de los valores vecinos.
 
         // left
         sum += a[right * H + j];
@@ -42,29 +48,36 @@ __global__ void deviceIteration(int *c, int *a, int H, int W)
 
         int value = a[k];
         int result = 0;
+        // Guardamos el resultado obtenido, si esta vivo o no
         if ((value == 1 && (sum == 2 || sum == 3)) || (value == 0 && (sum == 3 || sum == 6))) {
             result = 1;
         }
 
+        // Lo dejamos en la matriz final.
         c[k] = result;
     }
 }
 // CUDA kernel. Each thread takes care of one element of c
 __global__ void deviceIterationNotIf(int *c, int *a, int H, int W)
 {
-    // Get our global thread ID
+    // Tomamos el indice y lugar donde se calculará si vive o no.
     const int k = blockIdx.x;
+    // En caso de pasarnos no lo consideramos.
     if (k < W*H) {
 
+        // Calculamos la posición en la matriz.
         const int i = k / H;
         const int j = k % H;
 
         int sum = 0;
 
+        // Ahora obtenemos los indices de los vecinos.
         const int left = (i + W - 1) % W;
         const int right = (i + 1) % W;
         const int down = (j + 1) % H;
         const int up = (j + H - 1) % H;
+
+        // Calculamos la suma de los valores vecinos.
 
         // left
         sum += a[right * H + j];
@@ -84,6 +97,7 @@ __global__ void deviceIterationNotIf(int *c, int *a, int H, int W)
         sum += a[left * H + down];
 
         int value = a[k];
+        // Guardamos el resultado obtenido, si esta vivo o no
         c[k] = (value == 1 && (sum == 2 || sum == 3)) || (value == 0 && (sum == 3 || sum == 6));
     }
 }

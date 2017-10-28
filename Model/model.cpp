@@ -1,6 +1,6 @@
-//
-// Created by juaki on 10/15/17.
-//
+/**
+ * Clase que representa el modelo del juego
+ */
 
 #include "model.h"
 #include "../Examples/Waifu.h"
@@ -9,10 +9,13 @@
 #include "../Examples/RandomExample.h"
 
 model::model() {
+
+    // Se inicializan las implementaciones.
     implementationcpu = new cpu();
     implementationopencl = new opencl();
     implementationcuda = new cuda();
 
+    // se inicializan los ejemplos y se guardan en un arreglo.
     examples[0] = new Lines();
     examples[1] = new Replicator();
     examples[2] = new Waifu();
@@ -22,10 +25,16 @@ model::model() {
     currentExample = 0;
 }
 
+/**
+ * Retorna el ejemplo seleccionado.
+ */
 Matrix *model::getGrid() {
     return examples[currentExample]->getExample();
 }
 
+/**
+ * Corre una iteración del modelo.
+ */
 void model::runIteration() {
     switch(currentImplementation){
         case 0:
@@ -42,6 +51,9 @@ void model::runIteration() {
 
 }
 
+/**
+ * Setea el ejemplo a correr.
+ */
 void model::setCurrentExample(std::string name) {
     if (name.compare("Lines") == 0)
         currentExample = 0;
@@ -54,6 +66,9 @@ void model::setCurrentExample(std::string name) {
     }
 }
 
+/**
+ * Setea la implementación que se usará.
+ */
 void model::setCurrentImplementation(std::string name) {
 
     if (name.compare("CPU") == 0)
