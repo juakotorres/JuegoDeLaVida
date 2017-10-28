@@ -19,6 +19,7 @@ public:
     Canvas(QWidget *parent = 0);
     ~Canvas();
 
+    void handleButton1s(std::string basic_string, std::string basicString);
     void handleButton(std::string string, std::string basic_string);
     void setModel(model *pModel);
 

@@ -20,6 +20,8 @@ public:
     void setCurrentExample(std::string name);
     void setCurrentImplementation(std::string name);
 
+    std::string getImplementation();
+
 private:
     cpu *implementationcpu;
     opencl *implementationopencl;
@@ -28,7 +30,7 @@ private:
     int currentImplementation;
     int currentExample;
 
-    Example *examples[3];
+    Example *examples[4];
 
 };
 

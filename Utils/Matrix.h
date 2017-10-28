@@ -20,6 +20,8 @@ public:
 
     ~Matrix();
 
+    void randomMatrix();
+
 private:
     int height,width;
     int* valores;

@@ -20,7 +20,12 @@
 class opencl : public implementations {
 
 public:
+    opencl();
     void runIteration(Matrix *grid);
+private:
+    cl::Context myContext;
+    cl::Program myProgram;
+    cl::Device default_device;
 };
 
 

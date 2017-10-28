@@ -29,7 +29,7 @@ void Window::setUpGUI() {
     gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
 
     QStringList items;
-    items << tr("Lines") << tr("Replicator") << tr("Waifu");
+    items << tr("Lines") << tr("Replicator") << tr("Waifu") << tr("Random");
     typeModel = new QStringListModel(items, this);
 
     comboBox = new QComboBox(this);
@@ -60,7 +60,11 @@ void Window::setUpGUI() {
     pushButton_2 = new QPushButton(this);
     pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
 
+    pushButton_3 = new QPushButton(this);
+    pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+
     gridLayout_3->addWidget(pushButton_2, 1, 4, 1, 1);
+    gridLayout_3->addWidget(pushButton_3, 1, 5, 1, 1);
 
     label_2 = new QLabel(this);
     label_2->setObjectName(QString::fromUtf8("label_2"));
@@ -95,8 +99,10 @@ void Window::setUpGUI() {
     gridLayout_2->setRowStretch(1, 3);
 
     pushButton_2->setText("Run");
+    pushButton_3->setText("Run 1s");
 
     connect(pushButton_2, SIGNAL(pressed()), this, SLOT(handleButton()));
+    connect(pushButton_3, SIGNAL(pressed()), this, SLOT(handleButton1s()));
 
     QMetaObject::connectSlotsByName(this);
 
@@ -107,6 +113,13 @@ void Window::handleButton() {
     std::string chosenExample = comboBox->currentText().toUtf8().constData();
     std::string chosenImplementation = comboBox_2->currentText().toUtf8().constData();
     widget->handleButton(chosenExample, chosenImplementation);
+}
+
+void Window::handleButton1s() {
+
+    std::string chosenExample = comboBox->currentText().toUtf8().constData();
+    std::string chosenImplementation = comboBox_2->currentText().toUtf8().constData();
+    widget->handleButton1s(chosenExample, chosenImplementation);
 }
 
 Window::~Window() {

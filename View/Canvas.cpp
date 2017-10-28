@@ -3,6 +3,7 @@
 //
 
 #include <QtGui/QPainter>
+#include <iomanip>
 #include "Canvas.h"
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent) {
@@ -51,4 +52,37 @@ void Canvas::handleButton(std::string chosenExample, std::string chosenImplement
     myModel->runIteration();
 
     this->update();
+}
+
+void Canvas::handleButton1s(std::string chosenExample, std::string chosenImplementation) {
+
+    myModel->setCurrentImplementation(chosenImplementation);
+    myModel->setCurrentExample(chosenExample);
+
+    std::clock_t start;
+    double dt;
+    double timeaccumulator = 0;
+    double iterations = 0;
+    double cellsevaluated = 0;
+    double gridsize = myModel->getGrid()->getHeight()*myModel->getGrid()->getWidth();
+
+    std::cout << "Mundo grilla, anchoxalto " << myModel->getGrid()->getWidth() << "x" << myModel->getGrid()->getHeight() << std::endl;
+    while (true) {
+        start = std::clock();
+        timeaccumulator += dt;
+        myModel->runIteration();
+        dt = 1000.0 * ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+        cellsevaluated += gridsize;
+        iterations++;
+        if (timeaccumulator >= 1000.0){
+            break;
+        }
+    }
+
+    std::cout << "Plataforma: "  << myModel->getImplementation() << std::endl;
+    std::cout << "número de iteraciones " << iterations << std::endl;
+    std::cout << "celulas evaluadas: " << std::setprecision (15) << cellsevaluated << std::endl;
+    std::cout << "----------------------------------------------------------------------------" << std::endl;
+    this->update();
+
 }
