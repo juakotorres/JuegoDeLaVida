@@ -19,7 +19,7 @@ model::model() {
     examples[0] = new Lines();
     examples[1] = new Replicator();
     examples[2] = new Waifu();
-    examples[3] = new RandomExample(1920, 1080);
+    examples[3] = new RandomExample(128, 128);
 
     currentImplementation = 0;
     currentExample = 0;

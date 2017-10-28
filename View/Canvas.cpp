@@ -49,7 +49,20 @@ void Canvas::handleButton(std::string chosenExample, std::string chosenImplement
 
     myModel->setCurrentImplementation(chosenImplementation);
     myModel->setCurrentExample(chosenExample);
+
+    std::clock_t start;
+
+
+    start = std::clock();
+
     myModel->runIteration();
+    double dt = 1000.0 * ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+
+    std::cout << "Plataforma: "  << myModel->getImplementation() << std::endl;
+    std::cout << "Tiempo de una iteración " << dt << std::endl;
+    std::cout << "Tamaño de la grilla " << myModel->getGrid()->getHeight()*myModel->getGrid()->getWidth()<< std::endl;
+    std::cout << "----------------------------------------------------------------------------" << std::endl;
+
 
     this->update();
 }
@@ -81,7 +94,7 @@ void Canvas::handleButton1s(std::string chosenExample, std::string chosenImpleme
 
     std::cout << "Plataforma: "  << myModel->getImplementation() << std::endl;
     std::cout << "número de iteraciones " << iterations << std::endl;
-    std::cout << "celulas evaluadas: " << std::setprecision (15) << cellsevaluated << std::endl;
+    std::cout << "celulas evaluadas: "  << std::fixed <<  cellsevaluated << std::endl;
     std::cout << "----------------------------------------------------------------------------" << std::endl;
     this->update();
 

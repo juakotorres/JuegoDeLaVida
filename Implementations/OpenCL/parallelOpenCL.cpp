@@ -51,14 +51,15 @@ void opencl::runIteration(Matrix *grid) {
     // blockSize = 31;
 
     // Esto nos da un bloque de tamaño no multiplo de 32
-    for (int i=2; i <= n; i++)
+    /*for (int i=2; i <= n; i++)
     {
         if (n % i == 0 && i % 32 != 0) {
             blockSize = (size_t) i;
             break;
         }
-    }
-
+    }*/
+    //blockSize = 32; // multiplo de 32
+    blockSize = 8; // no multiplo de 32
 
 
     //alternative way to run the kernel
@@ -117,7 +118,7 @@ opencl::opencl() {
     std::string kernel_code;
 
     // Load the kernel from source code
-    std::ifstream kernelFile("Implementations/OpenCL/kernel.cl");
+    std::ifstream kernelFile("Implementations/OpenCL/kernelSinIf.cl");
     std::string myLine;
 
     if (kernelFile.is_open())

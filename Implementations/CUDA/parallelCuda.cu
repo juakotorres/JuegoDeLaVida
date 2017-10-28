@@ -141,14 +141,14 @@ void run(int* a, int W, int H){
     n = H*W;
 
     // Tamaño del bloque. Elegir entre 32 y 31.
-    blockSize = 32;
-    // blockSize = 31;
+    //blockSize = 32;
+    blockSize = 8;
 
     // Number of thread blocks in grid
     gridSize = (int)ceil((float)n/blockSize);
 
     // Execute the kernel
-    deviceIteration<<< gridSize, blockSize >>>(d_c, d_a, H, W);
+    deviceIterationNotIf<<< gridSize, blockSize >>>(d_c, d_a, H, W);
 
     // Copy array back to host
     cudaMemcpy( h_c, d_c, bytes, cudaMemcpyDeviceToHost );
