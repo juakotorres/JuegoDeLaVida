@@ -1,9 +1,20 @@
 # JuegoDeLaVida
 El juego de la vida programado para comparar rendimiento entre CPU y GPU.
 
+Se debe instalar las siguientes bibliotecas:
 
+- Qt5
+- OpenCL (mínimo para intel)
+- CUDA
+- cmake
+- g++
+- nvcc
 
-extra/ocl-icd install. cmake complica3,
+Este proyecto fue instalado en un pc con sistema operativo archlinux y un paquete necesario fue:
+
+- ocl-icd
+
+Para ejecutar el proyecto:
 
 Estar en el directorio raiz del proyecto.
 Crear carpeta build.
